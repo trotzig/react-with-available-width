@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "git@github.com:trotzig/with-available-width.git",
   "author": "Henric Trotzig <henric.trotzig@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "consolidated-events": "^1.0.1"
+  }
 }
