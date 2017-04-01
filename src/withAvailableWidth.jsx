@@ -2,18 +2,18 @@ import { addEventListener, removeEventListener } from 'consolidated-events';
 import React, { PureComponent } from 'react';
 
 /**
- * HoC that injects a `contextWidth` prop to the component, equal to the
+ * HoC that injects a `availableWidth` prop to the component, equal to the
  * available width in the current context
  *
  * @param {Object} Component
  * @return {Object} a wrapped Component
  */
-export default function withContextWidth(Component) {
+export default function withAvailableWidth(Component) {
   return class extends PureComponent {
     constructor() {
       super();
       const initialState = {
-        contextWidth: undefined,
+        availableWidth: undefined,
       };
       this.state = initialState;
       this._handleDivRef = this._handleDivRef.bind(this);
@@ -35,18 +35,18 @@ export default function withContextWidth(Component) {
         return;
       }
       this.setState({
-        contextWidth: domElement.offsetWidth,
+        availableWidth: domElement.offsetWidth,
       });
     }
 
     render() {
-      if (typeof this.state.contextWidth === 'undefined') {
+      if (typeof this.state.availableWidth === 'undefined') {
         // This div will live in the document for a brief moment, just long
         // enough for it to mount. We then use it to calculate its width, and
         // replace it immediately with the underlying component.
         return (
           <div
-            style={{ flexGrow: '1' }}
+            style={{ flexGrow: '1', }}
             ref={this._handleDivRef}
           />
         );
@@ -54,7 +54,7 @@ export default function withContextWidth(Component) {
 
       return (
         <Component
-          contextWidth={this.state.contextWidth}
+          availableWidth={this.state.availableWidth}
           {...this.props}
         />
       );

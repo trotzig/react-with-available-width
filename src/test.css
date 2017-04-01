@@ -1,0 +1,15 @@
+.example {
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+  text-align: center;
+  background-color: #f0f0f0;
+}
+
+.example.comparison {
+  background-color: #cbd9ff;
+}
+
+.flexbox {
+  display: flex;
+}

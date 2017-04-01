@@ -2,13 +2,13 @@
   "name": "with-available-width",
   "version": "1.0.0",
   "description": "A React HOC that injects an `availableWidth` prop to the wrapped component",
-  "main": "index.js",
+  "main": "dist/withAvailableWidth.js",
   "repository": "git@github.com:trotzig/with-available-width.git",
   "author": "Henric Trotzig <henric.trotzig@gmail.com>",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run --silent clean && babel src/ -d dist/",
+    "build": "npm run --silent clean && babel src/withAvailableWidth.jsx -d dist/",
     "build-test": "webpack"
   },
   "dependencies": {
