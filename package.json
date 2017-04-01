@@ -6,10 +6,21 @@
   "repository": "git@github.com:trotzig/with-available-width.git",
   "author": "Henric Trotzig <henric.trotzig@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "yarn run clean && babel src/ -d dist/"
+  },
   "dependencies": {
     "consolidated-events": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^15.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-react-jsx": "^6.23.0",
+    "babel-preset-es2015": "^6.24.0",
+    "rimraf": "^2.6.1"
   }
 }
