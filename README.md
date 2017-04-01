@@ -21,7 +21,7 @@ function ToggleButton({
     </div>
   );
 }
-export default withContextWidth(ToggleButton);
+export default withAvailableWidth(ToggleButton);
 ```
 
 What's great here is that we can reuse this component in many contexts. If it's rendered in a table for instance, it's likely to render as a checkbox. But if it's a standalone component in a wide container, it's probably going to show the regular, wider version.
@@ -37,5 +37,5 @@ By default, `withAvailableWidth` will only recalculate the width when the window
 ```jsx
 import ResizeObserver from 'resize-observer-polyfill';
 
-export default withContextWidth(ToggleButton, { ResizeObserver });
+export default withAvailableWidth(ToggleButton, { ResizeObserver });
 ```
