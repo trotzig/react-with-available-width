@@ -1,15 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+
 .example {
   height: 30px;
   line-height: 30px;
   margin-bottom: 10px;
   text-align: center;
   background-color: #f0f0f0;
+  border: 1px solid #ccc;
 }
 
 .example.comparison {
   background-color: #cbd9ff;
+  border-color: #7e96d6;
+  width: 100%;
 }
 
 .flexbox {
   display: flex;
+}
+
+.float-layout {
+  overflow: hidden;
+}
+
+.float-sidebar {
+  float: left;
+  width: 25%;
+}
+.float-main {
+  float: right;
+  width: 75%;
 }

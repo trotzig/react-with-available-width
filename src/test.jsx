@@ -6,13 +6,15 @@ import withAvailableWidth from './withAvailableWidth';
 const WrappedComponent = withAvailableWidth(
   function({ availableWidth }) {
     return (
-      <div
-        className="example"
-        style={{
-          width: availableWidth,
-        }}
-      >
-        w={availableWidth}
+      <div style={{ width: '100%' }}>
+        <div
+          className="example"
+          style={{
+            width: availableWidth,
+          }}
+        >
+          w={availableWidth}
+        </div>
       </div>
     );
   }
@@ -50,7 +52,23 @@ class TestApp extends PureComponent {
         <Comparison/>
         <hr/>
 
-        <h2>In a flexbox</h2>
+        <h2>In a float-based layout</h2>
+        <p>
+        </p>
+        <div className="float-layout">
+          <div className="float-sidebar">
+            <WrappedComponent/>
+            <Comparison/>
+          </div>
+          <div className="float-main">
+            <WrappedComponent/>
+            <Comparison/>
+          </div>
+        </div>
+        <hr/>
+
+
+        <h2>In a balanced flexbox</h2>
         <p>
           This element should take up as much space as its siblings.
         </p>
@@ -59,6 +77,72 @@ class TestApp extends PureComponent {
           <Comparison/>
           <WrappedComponent/>
         </div>
+        <hr/>
+
+        <h2>In an unbalanced flexbox</h2>
+        <p>
+          This element should take up as much space as possible.
+        </p>
+        <div className="flexbox">
+          <div style={{ width: 150, flexShrink: '0' }}>
+            <Comparison/>
+          </div>
+          <div style={{ width: 100, flexShrink: '0' }}>
+            <Comparison/>
+          </div>
+          <WrappedComponent/>
+        </div>
+        <hr/>
+
+        <h2>In a table</h2>
+        <p>
+          Browsers ignore the width of elements, and use content to size
+          the different columns. The available width here is what an empty
+          div would be assigned in the same context.
+        </p>
+        <table style={{ width: '100%' }}>
+          <tr>
+            <th>One</th>
+            <th>Two</th>
+            <th>Three</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td><Comparison/></td>
+              <td><Comparison/></td>
+              <td><WrappedComponent/></td>
+            </tr>
+            <tr>
+              <td><Comparison/></td>
+              <td><Comparison/></td>
+              <td><WrappedComponent/></td>
+            </tr>
+          </tbody>
+        </table>
+        <hr/>
+
+        <h2>In a table with fixed layout</h2>
+        <p>
+        </p>
+        <table style={{ width: '100%', tableLayout: 'fixed' }}>
+          <tr>
+            <th>One</th>
+            <th>Two</th>
+            <th>Three</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td><Comparison/></td>
+              <td><Comparison/></td>
+              <td><WrappedComponent/></td>
+            </tr>
+            <tr>
+              <td><Comparison/></td>
+              <td><Comparison/></td>
+              <td><WrappedComponent/></td>
+            </tr>
+          </tbody>
+        </table>
         <hr/>
       </div>
     );
