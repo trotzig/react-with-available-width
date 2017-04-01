@@ -9,7 +9,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run --silent clean && babel src/withAvailableWidth.jsx -d dist/",
-    "build-test": "webpack"
+    "build-test": "webpack",
+    "prepublish": "npm run --silent build"
   },
   "dependencies": {
     "consolidated-events": "^1.0.1"

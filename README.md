@@ -39,3 +39,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 
 export default withAvailableWidth(ToggleButton, { ResizeObserver });
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for help on how to contribute.
