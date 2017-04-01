@@ -46,7 +46,7 @@ export default function withAvailableWidth(Component) {
         // replace it immediately with the underlying component.
         return (
           <div
-            style={{ flexGrow: '1', }}
+            style={{ flexGrow: '1', width: '100%', }}
             ref={this._handleDivRef}
           />
         );
