@@ -8,5 +8,8 @@
   "license": "MIT",
   "dependencies": {
     "consolidated-events": "^1.0.1"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0"
   }
 }
