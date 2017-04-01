@@ -52,6 +52,19 @@ class TestApp extends PureComponent {
         <Comparison/>
         <hr/>
 
+        <h2>In an absolutely positioned element</h2>
+        <p>
+          The element is absolutely positioned at the bottom right edge.
+          Try resizing to see how max-width comes into play.
+        </p>
+        <div className="relative-container">
+          <div className="absolute-child">
+            <WrappedComponent/>
+            <Comparison/>
+          </div>
+        </div>
+        <hr/>
+
         <h2>In a float-based layout</h2>
         <p>
         </p>
