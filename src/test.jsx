@@ -29,6 +29,19 @@ function Comparison() {
 }
 
 class TestApp extends PureComponent {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        delayDone: true,
+      });
+    }, 100);
+  }
+
   render() {
     return (
       <div>
@@ -57,8 +70,8 @@ class TestApp extends PureComponent {
           The element is absolutely positioned at the bottom right edge.
           Try resizing to see how max-width comes into play.
         </p>
-        <div className="relative-container">
-          <div className="absolute-child">
+        <div className="relative-container container">
+          <div className="absolute-child container">
             <WrappedComponent/>
             <Comparison/>
           </div>
@@ -68,12 +81,12 @@ class TestApp extends PureComponent {
         <h2>In a float-based layout</h2>
         <p>
         </p>
-        <div className="float-layout">
-          <div className="float-sidebar">
+        <div className="float-layout container">
+          <div className="float-sidebar container">
             <WrappedComponent/>
             <Comparison/>
           </div>
-          <div className="float-main">
+          <div className="float-main container">
             <WrappedComponent/>
             <Comparison/>
           </div>
@@ -85,7 +98,7 @@ class TestApp extends PureComponent {
         <p>
           This element should take up as much space as its siblings.
         </p>
-        <div className="flexbox">
+        <div className="flexbox container">
           <Comparison/>
           <Comparison/>
           <WrappedComponent/>
@@ -96,7 +109,7 @@ class TestApp extends PureComponent {
         <p>
           This element should take up as much space as possible.
         </p>
-        <div className="flexbox">
+        <div className="flexbox container">
           <div style={{ width: 150, flexShrink: '0' }}>
             <Comparison/>
           </div>
@@ -113,7 +126,10 @@ class TestApp extends PureComponent {
           the different columns. The available width here is what an empty
           div would be assigned in the same context.
         </p>
-        <table style={{ width: '100%' }}>
+        <table
+          className="container"
+          style={{ width: '100%' }}
+        >
           <tr>
             <th>One</th>
             <th>Two</th>
@@ -137,7 +153,10 @@ class TestApp extends PureComponent {
         <h2>In a table with fixed layout</h2>
         <p>
         </p>
-        <table style={{ width: '100%', tableLayout: 'fixed' }}>
+        <table
+          className="container"
+          style={{ width: '100%', tableLayout: 'fixed' }}
+        >
           <tr>
             <th>One</th>
             <th>Two</th>
@@ -156,6 +175,20 @@ class TestApp extends PureComponent {
             </tr>
           </tbody>
         </table>
+        <hr/>
+
+        <h2>When styling is applied asynchronous</h2>
+        <p>
+          Some setups will render the DOM once without any css, then apply
+          styling. This isn't too common, but we need to handle it gracefully.
+        </p>
+        <div
+          className="container"
+          style={{ width: this.state.delayDone ? 200 : '100%' }}
+        >
+          <Comparison/>
+          <WrappedComponent/>
+        </div>
         <hr/>
       </div>
     );
