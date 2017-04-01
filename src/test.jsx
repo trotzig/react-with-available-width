@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import ResizeObserverPolyfill from 'resize-observer-polyfill';
 
 import withAvailableWidth from './withAvailableWidth';
 
@@ -17,7 +18,8 @@ const WrappedComponent = withAvailableWidth(
         </div>
       </div>
     );
-  }
+  },
+  { ResizeObserver: ResizeObserverPolyfill },
 );
 
 function Comparison() {
@@ -130,11 +132,13 @@ class TestApp extends PureComponent {
           className="container"
           style={{ width: '100%' }}
         >
-          <tr>
-            <th>One</th>
-            <th>Two</th>
-            <th>Three</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>One</th>
+              <th>Two</th>
+              <th>Three</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
               <td><Comparison/></td>
@@ -157,11 +161,13 @@ class TestApp extends PureComponent {
           className="container"
           style={{ width: '100%', tableLayout: 'fixed' }}
         >
-          <tr>
-            <th>One</th>
-            <th>Two</th>
-            <th>Three</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>One</th>
+              <th>Two</th>
+              <th>Three</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
               <td><Comparison/></td>

@@ -1,6 +1,9 @@
 import { addEventListener, removeEventListener } from 'consolidated-events';
 import React, { PureComponent } from 'react';
 
+const INITIAL_STATE = {
+  availableWidth: undefined,
+}
 /**
  * HoC that injects a `availableWidth` prop to the component, equal to the
  * available width in the current context
@@ -8,26 +11,26 @@ import React, { PureComponent } from 'react';
  * @param {Object} Component
  * @return {Object} a wrapped Component
  */
-export default function withAvailableWidth(Component) {
+export default function withAvailableWidth(Component, { ResizeObserver }) {
   return class extends PureComponent {
     constructor() {
       super();
-      const initialState = {
-        availableWidth: undefined,
-      };
-      this.state = initialState;
+      this.state = INITIAL_STATE;
       this._handleDivRef = this._handleDivRef.bind(this);
 
       this._resizeHandle = addEventListener(
         window,
         'resize',
-        () => this.setState(initialState),
+        () => this.setState(INITIAL_STATE),
         { passive: true },
       );
     }
 
     componentWillUnmount() {
       removeEventListener(this._resizeHandle);
+      if (this._unobserveResize) {
+        this._unobserveResize();
+      }
     }
 
     _handleDivRef(domElement) {
@@ -37,6 +40,13 @@ export default function withAvailableWidth(Component) {
       this.setState({
         availableWidth: domElement.offsetWidth,
       });
+      if (!this._unobserveResize && ResizeObserver) {
+        const ro = new ResizeObserver(() => this.setState(INITIAL_STATE));
+        this._unobserveResize = () => {
+          ro.unobserve(domElement.parentNode);
+        };
+       ro.observe(domElement.parentNode);
+      }
     }
 
     render() {
