@@ -231,6 +231,19 @@ class TestApp extends PureComponent {
           <WrappedComponentRO/>
         </div>
         <hr/>
+
+        <h2>In an animated container</h2>
+        <p>
+        </p>
+        <div
+          className="container animated"
+          style={{ width: this.state.delayDone ? 200 : 0 }}
+        >
+          <Comparison/>
+          <WrappedComponent/>
+          <WrappedComponentRO/>
+        </div>
+        <hr/>
       </div>
     );
   }

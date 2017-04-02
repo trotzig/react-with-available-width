@@ -54,3 +54,7 @@
   float: right;
   width: 75%;
 }
+
+.animated {
+  transition: width 250ms;
+}
