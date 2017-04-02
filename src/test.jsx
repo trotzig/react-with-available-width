@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+/* eslint-disable import/no-extraneous-dependencies */
+import React, { PropTypes, PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import ResizeObserver from 'resize-observer-polyfill';
 
@@ -27,6 +28,9 @@ function Component({ availableWidth }) {
     </div>
   );
 }
+Component.propTypes = {
+  availableWidth: PropTypes.number.isRequired,
+};
 
 const WrappedComponent = withAvailableWidth(Component);
 const WrappedComponentRO = withAvailableWidth(Component, resizeObserver);
@@ -78,10 +82,10 @@ class TestApp extends PureComponent {
           This element should span the entire width of the document.
           Try resizing the window to make sure it updates.
         </p>
-        <WrappedComponent/>
-        <WrappedComponentRO/>
-        <Comparison/>
-        <hr/>
+        <WrappedComponent />
+        <WrappedComponentRO />
+        <Comparison />
+        <hr />
 
         <h2>In an absolutely positioned element</h2>
         <p>
@@ -90,29 +94,28 @@ class TestApp extends PureComponent {
         </p>
         <div className="relative-container container">
           <div className="absolute-child container">
-            <WrappedComponent/>
-            <WrappedComponentRO/>
-            <Comparison/>
+            <WrappedComponent />
+            <WrappedComponentRO />
+            <Comparison />
           </div>
         </div>
-        <hr/>
+        <hr />
 
         <h2>In a float-based layout</h2>
-        <p>
-        </p>
+        <p />
         <div className="float-layout container">
           <div className="float-sidebar container">
-            <WrappedComponent/>
-            <WrappedComponentRO/>
-            <Comparison/>
+            <WrappedComponent />
+            <WrappedComponentRO />
+            <Comparison />
           </div>
           <div className="float-main container">
-            <WrappedComponent/>
-            <WrappedComponentRO/>
-            <Comparison/>
+            <WrappedComponent />
+            <WrappedComponentRO />
+            <Comparison />
           </div>
         </div>
-        <hr/>
+        <hr />
 
 
         <h2>In a balanced flexbox</h2>
@@ -120,16 +123,16 @@ class TestApp extends PureComponent {
           This element should take up as much space as its siblings.
         </p>
         <div className="flexbox container">
-          <Comparison/>
-          <Comparison/>
-          <WrappedComponent/>
+          <Comparison />
+          <Comparison />
+          <WrappedComponent />
         </div>
         <div className="flexbox container">
-          <Comparison/>
-          <Comparison/>
-          <WrappedComponentRO/>
+          <Comparison />
+          <Comparison />
+          <WrappedComponentRO />
         </div>
-        <hr/>
+        <hr />
 
         <h2>In an unbalanced flexbox</h2>
         <p>
@@ -137,23 +140,23 @@ class TestApp extends PureComponent {
         </p>
         <div className="flexbox container">
           <div style={{ width: 150, flexShrink: '0' }}>
-            <Comparison/>
+            <Comparison />
           </div>
           <div style={{ width: 100, flexShrink: '0' }}>
-            <Comparison/>
+            <Comparison />
           </div>
-          <WrappedComponent/>
+          <WrappedComponent />
         </div>
         <div className="flexbox container">
           <div style={{ width: 150, flexShrink: '0' }}>
-            <Comparison/>
+            <Comparison />
           </div>
           <div style={{ width: 100, flexShrink: '0' }}>
-            <Comparison/>
+            <Comparison />
           </div>
-          <WrappedComponentRO/>
+          <WrappedComponentRO />
         </div>
-        <hr/>
+        <hr />
 
         <h2>In a table</h2>
         <p>
@@ -174,18 +177,18 @@ class TestApp extends PureComponent {
           </thead>
           <tbody>
             <tr>
-              <td><Comparison/></td>
-              <td><Comparison/></td>
-              <td><WrappedComponent/></td>
+              <td><Comparison /></td>
+              <td><Comparison /></td>
+              <td><WrappedComponent /></td>
             </tr>
             <tr>
-              <td><Comparison/></td>
-              <td><Comparison/></td>
-              <td><WrappedComponentRO/></td>
+              <td><Comparison /></td>
+              <td><Comparison /></td>
+              <td><WrappedComponentRO /></td>
             </tr>
           </tbody>
         </table>
-        <hr/>
+        <hr />
 
         <h2>In a table with fixed layout</h2>
         <p>
@@ -204,18 +207,18 @@ class TestApp extends PureComponent {
           </thead>
           <tbody>
             <tr>
-              <td><Comparison/></td>
-              <td><Comparison/></td>
-              <td><WrappedComponent/></td>
+              <td><Comparison /></td>
+              <td><Comparison /></td>
+              <td><WrappedComponent /></td>
             </tr>
             <tr>
-              <td><Comparison/></td>
-              <td><Comparison/></td>
-              <td><WrappedComponentRO/></td>
+              <td><Comparison /></td>
+              <td><Comparison /></td>
+              <td><WrappedComponentRO /></td>
             </tr>
           </tbody>
         </table>
-        <hr/>
+        <hr />
 
         <h2>When styling is applied asynchronously</h2>
         <p>
@@ -227,11 +230,11 @@ class TestApp extends PureComponent {
           className="container"
           style={{ width: this.state.delayDone ? 200 : '100%' }}
         >
-          <Comparison/>
-          <WrappedComponent/>
-          <WrappedComponentRO/>
+          <Comparison />
+          <WrappedComponent />
+          <WrappedComponentRO />
         </div>
-        <hr/>
+        <hr />
 
         <h2>In an animated container</h2>
         <p>
@@ -242,17 +245,17 @@ class TestApp extends PureComponent {
           className="container animated"
           style={{ width: this.state.delayDone ? 200 : 0 }}
         >
-          <Comparison/>
-          <WrappedComponent/>
-          <WrappedComponentRO/>
+          <Comparison />
+          <WrappedComponent />
+          <WrappedComponentRO />
         </div>
-        <hr/>
+        <hr />
       </div>
     );
   }
 }
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', () => {
   const root = document.createElement('div');
   document.body.appendChild(root);
   ReactDOM.render(<TestApp />, root);

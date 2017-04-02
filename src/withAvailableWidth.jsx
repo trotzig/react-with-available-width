@@ -1,14 +1,15 @@
+/* eslint-disable comma-dangle, no-underscore-dangle */
 import React, { PureComponent } from 'react';
 
 const INITIAL_STATE = {
   availableWidth: undefined,
-}
+};
 
 function defaultObserver(_domElement, notify) {
   window.addEventListener('resize', notify, { passive: true });
   return () => {
     window.removeEventListener('resize', notify, { passive: true });
-  }
+  };
 }
 
 /**
@@ -68,7 +69,7 @@ export default function withAvailableWidth(
         // replace it immediately with the underlying component.
         return (
           <div
-            style={{ flexGrow: '1', width: '100%', }}
+            style={{ flexGrow: '1', width: '100%' }}
             ref={this._handleDivRef}
           />
         );

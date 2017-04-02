@@ -11,7 +11,8 @@
     "build": "npm run --silent clean && babel src/withAvailableWidth.jsx -d dist/",
     "build-test": "webpack",
     "prepublish": "npm run --silent build",
-    "test": "jest"
+    "lint": "eslint . --ext .js,.jsx",
+    "test": "lint && jest"
   },
   "jest": {
     "testRegex": "-test\\.jsx$"
@@ -26,6 +27,11 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-react-jsx": "^6.23.0",
     "babel-preset-es2015": "^6.24.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
     "jest": "^19.0.2",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
