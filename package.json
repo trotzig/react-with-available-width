@@ -12,9 +12,7 @@
     "build-test": "webpack",
     "prepublish": "npm run --silent build"
   },
-  "dependencies": {
-    "consolidated-events": "^1.0.1"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "react": "^15.0.0"
   },

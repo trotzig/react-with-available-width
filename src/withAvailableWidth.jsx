@@ -1,9 +1,16 @@
-import { addEventListener, removeEventListener } from 'consolidated-events';
 import React, { PureComponent } from 'react';
 
 const INITIAL_STATE = {
   availableWidth: undefined,
 }
+
+function defaultObserver(_domElement, notify) {
+  window.addEventListener('resize', notify, { passive: true });
+  return () => {
+    window.removeEventListener('resize', notify, { passive: true });
+  }
+}
+
 /**
  * HoC that injects a `availableWidth` prop to the component, equal to the
  * available width in the current context
@@ -11,42 +18,42 @@ const INITIAL_STATE = {
  * @param {Object} Component
  * @return {Object} a wrapped Component
  */
-export default function withAvailableWidth(Component, { ResizeObserver }) {
+export default function withAvailableWidth(
+  Component,
+  observer = defaultObserver
+) {
   return class extends PureComponent {
     constructor() {
       super();
       this.state = INITIAL_STATE;
       this._handleDivRef = this._handleDivRef.bind(this);
+    }
 
-      this._resizeHandle = addEventListener(
-        window,
-        'resize',
-        () => this.setState(INITIAL_STATE),
-        { passive: true },
-      );
+    componentDidMount() {
+      this._unobserve = observer(this._domElement.parentNode, () => {
+        this.setState(INITIAL_STATE);
+      });
     }
 
     componentWillUnmount() {
-      removeEventListener(this._resizeHandle);
-      if (this._unobserveResize) {
-        this._unobserveResize();
+      if (!this._unobserve) {
+        throw new Error(
+          'The observer did not provide a way to unobserve. ' +
+          'This will likely lead to memory leaks.'
+        );
       }
+      this._unobserve();
     }
 
     _handleDivRef(domElement) {
       if (!domElement) {
         return;
       }
+      this._domElement = domElement;
+
       this.setState({
         availableWidth: domElement.offsetWidth,
       });
-      if (!this._unobserveResize && ResizeObserver) {
-        const ro = new ResizeObserver(() => this.setState(INITIAL_STATE));
-        this._unobserveResize = () => {
-          ro.unobserve(domElement.parentNode);
-        };
-       ro.observe(domElement.parentNode);
-      }
     }
 
     render() {

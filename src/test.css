@@ -19,6 +19,7 @@
 
 .container {
   background-color: rgba(100, 100, 100, 0.05);
+  max-width: 100%;
 }
 
 .relative-container {

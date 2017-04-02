@@ -1,26 +1,35 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import ResizeObserverPolyfill from 'resize-observer-polyfill';
+import ResizeObserver from 'resize-observer-polyfill';
 
 import withAvailableWidth from './withAvailableWidth';
 
-const WrappedComponent = withAvailableWidth(
-  function({ availableWidth }) {
-    return (
-      <div style={{ width: '100%' }}>
-        <div
-          className="example"
-          style={{
-            width: availableWidth,
-          }}
-        >
-          w={availableWidth}
-        </div>
+function resizeObserver(domElement, notify) {
+  const ro = new ResizeObserver(() => {
+    console.log('Resizing happened', domElement);
+    notify();
+  });
+  ro.observe(domElement);
+  return () => ro.unobserve(domElement);
+}
+
+function Component({ availableWidth }) {
+  return (
+    <div style={{ width: '100%' }}>
+      <div
+        className="example"
+        style={{
+          width: availableWidth,
+        }}
+      >
+        w={availableWidth}
       </div>
-    );
-  },
-  { ResizeObserver: ResizeObserverPolyfill },
-);
+    </div>
+  );
+}
+
+const WrappedComponent = withAvailableWidth(Component);
+const WrappedComponentRO = withAvailableWidth(Component, resizeObserver);
 
 function Comparison() {
   return (
@@ -53,8 +62,14 @@ class TestApp extends PureComponent {
           {' '}
           <code>withAvailableWidth</code>
           {' '}
-          in a number of contexts. Each example has a comparison rendered
-          in light blue. This element is not using the HOC.
+          in a number of contexts. Each example is rendered twice. First, with a
+          default resize observer (listening to <code>resize</code> events on
+          the <code>window</code> object). Then with a
+          {' '}
+          <a href="https://github.com/que-etc/resize-observer-polyfill">
+            <code>ResizeObserver</code> polyfill
+          </a>. After the examples, a comparison is rendered in light blue.
+          The blue element is not using the HOC.
         </p>
         <hr />
 
@@ -64,6 +79,7 @@ class TestApp extends PureComponent {
           Try resizing the window to make sure it updates.
         </p>
         <WrappedComponent/>
+        <WrappedComponentRO/>
         <Comparison/>
         <hr/>
 
@@ -75,6 +91,7 @@ class TestApp extends PureComponent {
         <div className="relative-container container">
           <div className="absolute-child container">
             <WrappedComponent/>
+            <WrappedComponentRO/>
             <Comparison/>
           </div>
         </div>
@@ -86,10 +103,12 @@ class TestApp extends PureComponent {
         <div className="float-layout container">
           <div className="float-sidebar container">
             <WrappedComponent/>
+            <WrappedComponentRO/>
             <Comparison/>
           </div>
           <div className="float-main container">
             <WrappedComponent/>
+            <WrappedComponentRO/>
             <Comparison/>
           </div>
         </div>
@@ -105,6 +124,11 @@ class TestApp extends PureComponent {
           <Comparison/>
           <WrappedComponent/>
         </div>
+        <div className="flexbox container">
+          <Comparison/>
+          <Comparison/>
+          <WrappedComponentRO/>
+        </div>
         <hr/>
 
         <h2>In an unbalanced flexbox</h2>
@@ -119,6 +143,15 @@ class TestApp extends PureComponent {
             <Comparison/>
           </div>
           <WrappedComponent/>
+        </div>
+        <div className="flexbox container">
+          <div style={{ width: 150, flexShrink: '0' }}>
+            <Comparison/>
+          </div>
+          <div style={{ width: 100, flexShrink: '0' }}>
+            <Comparison/>
+          </div>
+          <WrappedComponentRO/>
         </div>
         <hr/>
 
@@ -148,7 +181,7 @@ class TestApp extends PureComponent {
             <tr>
               <td><Comparison/></td>
               <td><Comparison/></td>
-              <td><WrappedComponent/></td>
+              <td><WrappedComponentRO/></td>
             </tr>
           </tbody>
         </table>
@@ -156,6 +189,7 @@ class TestApp extends PureComponent {
 
         <h2>In a table with fixed layout</h2>
         <p>
+          All columns should have the same width.
         </p>
         <table
           className="container"
@@ -177,13 +211,13 @@ class TestApp extends PureComponent {
             <tr>
               <td><Comparison/></td>
               <td><Comparison/></td>
-              <td><WrappedComponent/></td>
+              <td><WrappedComponentRO/></td>
             </tr>
           </tbody>
         </table>
         <hr/>
 
-        <h2>When styling is applied asynchronous</h2>
+        <h2>When styling is applied asynchronously</h2>
         <p>
           Some setups will render the DOM once without any css, then apply
           styling. This isn't too common, but we need to handle it gracefully.
@@ -194,6 +228,7 @@ class TestApp extends PureComponent {
         >
           <Comparison/>
           <WrappedComponent/>
+          <WrappedComponentRO/>
         </div>
         <hr/>
       </div>

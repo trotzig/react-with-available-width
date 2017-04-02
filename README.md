@@ -30,15 +30,32 @@ What's great here is that we can reuse this component in many contexts. If it's 
 
 To figure out the available width in the current context, we drop an empty `<div>` in the DOM for a brief moment. As soon as the div is mounted, we measure its width, then re-render with the calculated width injected as `availableWidth` to the component. The component can then render things conditionally based on this number.
 
-## Limitations
+## Reacting to size changes
 
-By default, `withAvailableWidth` will only recalculate the width when the window is resized. By injecting a [`ResizeObserver` polyfill](https://github.com/que-etc/resize-observer-polyfill), you can make it recalculate the width on DOM updates as well.
+By default, `withAvailableWidth` will only recalculate the width when the
+window is resized. You can provide your own observer by passing in a function
+as the second argument to the HOD. Here's an example using [`ResizeObserver`
+](https://github.com/que-etc/resize-observer-polyfill):
 
 ```jsx
 import ResizeObserver from 'resize-observer-polyfill';
 
-export default withAvailableWidth(ToggleButton, { ResizeObserver });
+export default withAvailableWidth(
+  ToggleButton,
+  (domElement, notify) => {
+    const observer = new ResizeObserver(() => notify());
+    observer.observe(domElement);
+    return () => observer.unobserve(domElement);
+  }
+);
 ```
+
+The observer function is called once from the HOC, with two arguments:
+- `domElement`: the parent element of the wrapped component
+- `notify`: a function to call on every size change
+
+You need to return a function that will clean out the observer. This function
+will get called when the HOC is unmounted to clean up possible event listeners.
 
 ## Contributing
 
