@@ -30,18 +30,22 @@ export default function withAvailableWidth(
     }
 
     componentDidMount() {
-      this._unobserve = observer(this._domElement.parentNode, () => {
+      this._unobserve = observer(this._containerElement, () => {
+        if (this._containerElement.offsetWidth ===
+          this._lastKnownContainerWidth) {
+          return; // Nothing changed
+        }
         this.setState(INITIAL_STATE);
       });
-    }
-
-    componentWillUnmount() {
-      if (!this._unobserve) {
+      if (typeof this._unobserve !== 'function') {
         throw new Error(
           'The observer did not provide a way to unobserve. ' +
           'This will likely lead to memory leaks.'
         );
       }
+    }
+
+    componentWillUnmount() {
       this._unobserve();
     }
 
@@ -49,7 +53,8 @@ export default function withAvailableWidth(
       if (!domElement) {
         return;
       }
-      this._domElement = domElement;
+      this._containerElement = domElement.parentNode;
+      this._lastKnownContainerWidth = this._containerElement.offsetWidth;
 
       this.setState({
         availableWidth: domElement.offsetWidth,

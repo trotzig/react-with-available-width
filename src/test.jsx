@@ -220,7 +220,8 @@ class TestApp extends PureComponent {
         <h2>When styling is applied asynchronously</h2>
         <p>
           Some setups will render the DOM once without any css, then apply
-          styling. This isn't too common, but we need to handle it gracefully.
+          styling. Only the <code>ResizeObserver</code> powered element will
+          work here.
         </p>
         <div
           className="container"
@@ -234,6 +235,8 @@ class TestApp extends PureComponent {
 
         <h2>In an animated container</h2>
         <p>
+          Only the <code>ResizeObserver</code> powered element will adjust its
+          width here.
         </p>
         <div
           className="container animated"
