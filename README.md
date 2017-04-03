@@ -39,6 +39,16 @@ rendered in a table for instance, it's likely to render as a checkbox. But if
 it's a standalone component in a wide container, it's probably going to show
 the regular, wider version.
 
+## Similar solutions
+
+[react-measure](https://github.com/souporserious/react-measure) is a great
+general tool for computing dimensions. But it suffers from having to render
+components twice in order to get the width and react to it.
+
+[react-measure-it](https://github.com/plusacht/react-measure-it) is also a HOC
+with roughly the same idea as `withAvailableWidth`. But it gives you the
+dimensions of the container, not the available width inside the container.
+
 ## How does it work?
 
 To figure out the available width in the current context, we drop an empty
