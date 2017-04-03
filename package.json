@@ -8,11 +8,11 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run --silent clean && babel src/withAvailableWidth.jsx -d dist/",
+    "build": "npm run clean && babel src/withAvailableWidth.jsx -d dist/",
     "build-test": "webpack",
-    "prepublish": "npm run --silent build",
+    "prepublish": "npm run build",
     "lint": "eslint . --ext .js,.jsx",
-    "test": "lint && jest"
+    "test": "npm run lint && jest"
   },
   "jest": {
     "testRegex": "-test\\.jsx$"
