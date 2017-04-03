@@ -1,5 +1,5 @@
 {
-  "name": "with-available-width",
+  "name": "react-with-available-width",
   "version": "1.0.0",
   "description": "A React HOC that injects an `availableWidth` prop to the wrapped component",
   "main": "dist/withAvailableWidth.js",
