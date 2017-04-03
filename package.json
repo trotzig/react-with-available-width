@@ -6,9 +6,10 @@
   "repository": "git@github.com:trotzig/with-available-width.git",
   "author": "Henric Trotzig <henric.trotzig@gmail.com>",
   "license": "MIT",
+  "files": ["dist"],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && babel src/withAvailableWidth.jsx -d dist/",
+    "build": "npm run clean && babel src --out-dir dist --ignore *test.*",
     "build-test": "webpack",
     "prepublish": "npm run build",
     "lint": "eslint . --ext .js,.jsx",
