@@ -33,8 +33,9 @@ To figure out the available width in the current context, we drop an empty `<div
 ## Reacting to size changes
 
 By default, `withAvailableWidth` will only recalculate the width when the
-window is resized. You can provide your own observer by passing in a function
-as the second argument to the HOD. Here's an example using [`ResizeObserver`
+window is resized. If you need more fine-grained control, you can provide your
+own observer by passing in a function as the second argument to the HOC. Here's
+an example using [`ResizeObserver`
 ](https://github.com/que-etc/resize-observer-polyfill):
 
 ```jsx
