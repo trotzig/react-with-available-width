@@ -1,10 +1,6 @@
 /* eslint-disable comma-dangle, no-underscore-dangle */
 import React, { PureComponent } from 'react';
 
-const INITIAL_STATE = {
-  availableWidth: undefined,
-};
-
 function defaultObserver(_domElement, notify) {
   window.addEventListener('resize', notify, { passive: true });
   return () => {
@@ -26,7 +22,9 @@ export default function withAvailableWidth(
   return class extends PureComponent {
     constructor() {
       super();
-      this.state = INITIAL_STATE;
+      this.state = {
+        availableWidth: undefined,
+      };
       this._handleDivRef = this._handleDivRef.bind(this);
     }
 
@@ -36,7 +34,9 @@ export default function withAvailableWidth(
           this._lastKnownContainerWidth) {
           return; // Nothing changed
         }
-        this.setState(INITIAL_STATE);
+        this.setState({
+          availableWidth: this._getAvailableWidth(),
+        });
       });
       if (typeof this._unobserve !== 'function') {
         throw new Error(
@@ -50,6 +50,11 @@ export default function withAvailableWidth(
       this._unobserve();
     }
 
+    _getAvailableWidth() {
+      const domElement = this._containerElement.children[this._elementIndex];
+      return domElement.offsetWidth;
+    }
+
     _handleDivRef(domElement) {
       if (!domElement) {
         return;
@@ -57,13 +62,24 @@ export default function withAvailableWidth(
       this._containerElement = domElement.parentNode;
       this._lastKnownContainerWidth = this._containerElement.offsetWidth;
 
+      // Find the child index amongst its siblings. This is so that we can reuse
+      // this index when having to re-measure.
+      this._elementIndex = 0;
+      let child = domElement;
+
+      while ((child = child.previousSibling) !== null) { // eslint-disable-line
+        this._elementIndex += 1;
+      }
+
       this.setState({
-        availableWidth: domElement.offsetWidth,
+        availableWidth: this._getAvailableWidth(),
       });
     }
 
     render() {
-      if (typeof this.state.availableWidth === 'undefined') {
+      const { availableWidth } = this.state;
+
+      if (typeof availableWidth === 'undefined') {
         // This div will live in the document for a brief moment, just long
         // enough for it to mount. We then use it to calculate its width, and
         // replace it immediately with the underlying component.
@@ -77,7 +93,7 @@ export default function withAvailableWidth(
 
       return (
         <Component
-          availableWidth={this.state.availableWidth}
+          availableWidth={availableWidth}
           {...this.props}
         />
       );

@@ -20,7 +20,8 @@ function Component({ availableWidth }) {
       <div
         className="example"
         style={{
-          width: availableWidth,
+          width: '100%',
+          maxWidth: availableWidth,
         }}
       >
         w={availableWidth}
