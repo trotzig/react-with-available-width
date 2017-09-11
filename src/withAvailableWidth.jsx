@@ -36,7 +36,9 @@ export default function withAvailableWidth(
           this._lastKnownContainerWidth) {
           return; // Nothing changed
         }
-        this.setState(INITIAL_STATE);
+        this.setState({
+          availableWidth: this._element.offsetWidth,
+        });
       });
       if (typeof this._unobserve !== 'function') {
         throw new Error(
@@ -50,12 +52,21 @@ export default function withAvailableWidth(
       this._unobserve();
     }
 
+    componentDidUpdate() {
+      if (this._element) {
+        return;
+      }
+      this._element = this._containerElement.childNodes[this._indexInContainer];
+    }
+
     _handleDivRef(domElement) {
       if (!domElement) {
         return;
       }
       this._containerElement = domElement.parentNode;
       this._lastKnownContainerWidth = this._containerElement.offsetWidth;
+      this._indexInContainer = Array.prototype.indexOf.call(
+        this._containerElement.childNodes, domElement);
 
       this.setState({
         availableWidth: domElement.offsetWidth,
