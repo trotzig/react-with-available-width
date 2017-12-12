@@ -15,19 +15,30 @@ function resizeObserver(domElement, notify) {
   return () => ro.unobserve(domElement);
 }
 
-function Component({ availableWidth }) {
-  return (
-    <div style={{ width: '100%' }}>
-      <div
-        className="example"
-        style={{
-          width: availableWidth,
-        }}
-      >
-        w={availableWidth}
+class Component extends React.Component {
+  componentDidMount() {
+    console.log('Instance mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Instance unmounted');
+  }
+
+  render() {
+    const { availableWidth } = this.props;
+    return (
+      <div style={{ width: '100%' }}>
+        <div
+          className="example"
+          style={{
+            width: availableWidth,
+          }}
+        >
+          w={availableWidth}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 Component.propTypes = {
   availableWidth: PropTypes.number.isRequired,
@@ -44,6 +55,7 @@ function Comparison() {
   );
 }
 
+// eslint-disable-next-line react/no-multi-comp
 class TestApp extends PureComponent {
   constructor() {
     super();

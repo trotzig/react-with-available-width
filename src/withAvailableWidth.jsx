@@ -1,10 +1,6 @@
 /* eslint-disable comma-dangle, no-underscore-dangle */
 import React, { PureComponent } from 'react';
 
-const INITIAL_STATE = {
-  availableWidth: undefined,
-};
-
 function defaultObserver(_domElement, notify) {
   window.addEventListener('resize', notify, { passive: true });
   return () => {
@@ -26,17 +22,21 @@ export default function withAvailableWidth(
   return class extends PureComponent {
     constructor() {
       super();
-      this.state = INITIAL_STATE;
+      this._instanceId = `waw-${Math.random().toString(36).substring(7)}`;
+      this.state = {
+        dirty: true,
+        dirtyCount: 0,
+        availableWidth: undefined,
+      };
       this._handleDivRef = this._handleDivRef.bind(this);
     }
 
     componentDidMount() {
       this._unobserve = observer(this._containerElement, () => {
-        if (this._containerElement.offsetWidth ===
-          this._lastKnownContainerWidth) {
-          return; // Nothing changed
-        }
-        this.setState(INITIAL_STATE);
+        this.setState({
+          dirty: true,
+          dirtyCount: this.state.dirtyCount + 1,
+        });
       });
       if (typeof this._unobserve !== 'function') {
         throw new Error(
@@ -55,31 +55,44 @@ export default function withAvailableWidth(
         return;
       }
       this._containerElement = domElement.parentNode;
-      this._lastKnownContainerWidth = this._containerElement.offsetWidth;
 
       this.setState({
         availableWidth: domElement.offsetWidth,
+        dirty: false,
       });
     }
 
     render() {
-      if (typeof this.state.availableWidth === 'undefined') {
-        // This div will live in the document for a brief moment, just long
-        // enough for it to mount. We then use it to calculate its width, and
-        // replace it immediately with the underlying component.
-        return (
-          <div
-            style={{ flexGrow: '1', width: '100%' }}
-            ref={this._handleDivRef}
-          />
-        );
-      }
+      const { availableWidth, dirty, dirtyCount } = this.state;
 
       return (
-        <Component
-          availableWidth={this.state.availableWidth}
-          {...this.props}
-        />
+        <React.Fragment>
+          {dirty &&
+            <style
+              type="text/css"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{
+                __html: `#${this._instanceId} + * { display: none !important; }`,
+              }}
+            />
+          }
+          <div
+            id={this._instanceId}
+            key={dirtyCount}
+            ref={this._handleDivRef}
+            style={{
+              display: dirty ? 'block' : 'none',
+              flexGrow: '1',
+              width: '100%',
+            }}
+          />
+          {typeof availableWidth !== 'undefined' && (
+            <Component
+              availableWidth={availableWidth}
+              {...this.props}
+            />
+          )}
+        </React.Fragment>
       );
     }
   };
