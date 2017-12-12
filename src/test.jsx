@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import ResizeObserver from 'resize-observer-polyfill';
 
