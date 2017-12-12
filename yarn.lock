@@ -3071,10 +3071,6 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-addons-test-utils@^15.6.2:
-  version "15.6.2"
-  resolved "https://registry.npmjs.org/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
-
 react-dom@^16.2.0:
   version "16.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
