@@ -15,6 +15,11 @@ function resizeObserver(domElement, notify) {
   return () => ro.unobserve(domElement);
 }
 
+function RenderLessComponent({ availableWidth }) {
+  console.log('RenderLessComponent availableWidth', availableWidth);
+  return null;
+}
+
 class Component extends React.Component {
   componentDidMount() {
     console.log('Instance mounted');
@@ -25,9 +30,9 @@ class Component extends React.Component {
   }
 
   render() {
-    const { availableWidth } = this.props;
+    const { availableWidth, height } = this.props;
     return (
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%', height }}>
         <div
           className="example"
           style={{
@@ -42,10 +47,17 @@ class Component extends React.Component {
 }
 Component.propTypes = {
   availableWidth: PropTypes.number.isRequired,
+  height: PropTypes.number,
+};
+
+Component.defaultProps = {
+  height: undefined,
 };
 
 const WrappedComponent = withAvailableWidth(Component);
 const WrappedComponentRO = withAvailableWidth(Component, resizeObserver);
+const WrappedRenderLessComponent = withAvailableWidth(RenderLessComponent);
+const WrappedRenderLessComponentRO = withAvailableWidth(RenderLessComponent, resizeObserver);
 
 function Comparison() {
   return (
@@ -261,6 +273,29 @@ class TestApp extends PureComponent {
           <Comparison />
           <WrappedComponent />
           <WrappedComponentRO />
+        </div>
+        <hr />
+
+        <h2>In a container with scroll</h2>
+        <p>
+          The scroll position should be maintained when resizing the window.
+        </p>
+        <div
+          className="container"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          <WrappedComponentRO height={900} />
+        </div>
+        <hr />
+
+        <h2>Child without DOM elements</h2>
+        <p>
+          Sometimes it is useful to have a child that does not render anything.
+          It is important that these components don&apos;t throw errors.
+        </p>
+        <div className="container">
+          <WrappedRenderLessComponent />
+          <WrappedRenderLessComponentRO />
         </div>
         <hr />
       </div>
