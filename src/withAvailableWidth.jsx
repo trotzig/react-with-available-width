@@ -27,6 +27,7 @@ export default function withAvailableWidth(
         dirty: true,
         dirtyCount: 0,
         availableWidth: undefined,
+        height: undefined,
       };
       this._handleDivRef = this._handleDivRef.bind(this);
     }
@@ -36,6 +37,8 @@ export default function withAvailableWidth(
         this.setState({
           dirty: true,
           dirtyCount: this.state.dirtyCount + 1,
+          height: this._element.nextSibling ?
+            this._element.nextSibling.offsetHeight : undefined,
         });
       });
       if (typeof this._unobserve !== 'function') {
@@ -54,6 +57,7 @@ export default function withAvailableWidth(
       if (!domElement) {
         return;
       }
+      this._element = domElement;
       this._containerElement = domElement.parentNode;
 
       this.setState({
@@ -63,7 +67,7 @@ export default function withAvailableWidth(
     }
 
     render() {
-      const { availableWidth, dirty, dirtyCount } = this.state;
+      const { availableWidth, dirty, dirtyCount, height } = this.state;
 
       return (
         <React.Fragment>
@@ -84,6 +88,7 @@ export default function withAvailableWidth(
               display: dirty ? 'block' : 'none',
               flexGrow: '1',
               width: '100%',
+              height,
             }}
           />
           {typeof availableWidth !== 'undefined' && (
