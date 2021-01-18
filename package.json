@@ -1,6 +1,6 @@
 {
   "name": "react-with-available-width",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A React HOC that injects an `availableWidth` prop to the wrapped component",
   "main": "dist/withAvailableWidth.js",
   "repository": "git@github.com:trotzig/with-available-width.git",
