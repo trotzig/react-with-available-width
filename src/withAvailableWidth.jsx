@@ -2,9 +2,16 @@
 import React, { PureComponent } from 'react';
 
 function defaultObserver(_domElement, notify) {
-  window.addEventListener('resize', notify, { passive: true });
+  let lastKnownWidth = window ? window.innerWidth : undefined;
+  const listener = (e) => {
+    if (lastKnownWidth !== window.innerWidth) {
+      notify(e);
+    }
+    lastKnownWidth = window.innerWidth;
+  };
+  window.addEventListener('resize', listener, { passive: true });
   return () => {
-    window.removeEventListener('resize', notify, { passive: true });
+    window.removeEventListener('resize', listener, { passive: true });
   };
 }
 
@@ -37,14 +44,15 @@ export default function withAvailableWidth(
         this.setState({
           dirty: true,
           dirtyCount: this.state.dirtyCount + 1,
-          height: this._element.nextSibling ?
-            this._element.nextSibling.offsetHeight : undefined,
+          height: this._element.nextSibling
+            ? this._element.nextSibling.offsetHeight
+            : undefined,
         });
       });
       if (typeof this._unobserve !== 'function') {
         throw new Error(
           'The observer did not provide a way to unobserve. ' +
-          'This will likely lead to memory leaks.'
+            'This will likely lead to memory leaks.'
         );
       }
     }
@@ -71,7 +79,7 @@ export default function withAvailableWidth(
 
       return (
         <React.Fragment>
-          {dirty &&
+          {dirty && (
             <style
               type="text/css"
               // eslint-disable-next-line react/no-danger
@@ -79,7 +87,7 @@ export default function withAvailableWidth(
                 __html: `#${this._instanceId} + * { display: none !important; }`,
               }}
             />
-          }
+          )}
           <div
             id={this._instanceId}
             key={dirtyCount}
@@ -92,10 +100,7 @@ export default function withAvailableWidth(
             }}
           />
           {typeof availableWidth !== 'undefined' && (
-            <Component
-              availableWidth={availableWidth}
-              {...this.props}
-            />
+            <Component availableWidth={availableWidth} {...this.props} />
           )}
         </React.Fragment>
       );
